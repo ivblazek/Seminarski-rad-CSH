@@ -32,7 +32,7 @@
             this.buttonLock = new System.Windows.Forms.Button();
             this.buttonSelect = new System.Windows.Forms.Button();
             this.labelSelected = new System.Windows.Forms.Label();
-            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.textBoxTime = new System.Windows.Forms.TextBox();
             this.labelTime = new System.Windows.Forms.Label();
             this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.timer = new System.Windows.Forms.Timer(this.components);
@@ -40,6 +40,7 @@
             // 
             // buttonLock
             // 
+            this.buttonLock.Enabled = false;
             this.buttonLock.Location = new System.Drawing.Point(655, 69);
             this.buttonLock.Name = "buttonLock";
             this.buttonLock.Size = new System.Drawing.Size(75, 23);
@@ -61,16 +62,17 @@
             this.labelSelected.AutoSize = true;
             this.labelSelected.Location = new System.Drawing.Point(166, 74);
             this.labelSelected.Name = "labelSelected";
-            this.labelSelected.Size = new System.Drawing.Size(99, 13);
+            this.labelSelected.Size = new System.Drawing.Size(169, 13);
             this.labelSelected.TabIndex = 2;
-            this.labelSelected.Text = "Odabrana datoteka";
+            this.labelSelected.Text = "Trenutno NIJE odabrana datoteka";
             // 
-            // textBox1
+            // textBoxTime
             // 
-            this.textBox1.Location = new System.Drawing.Point(506, 72);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(105, 20);
-            this.textBox1.TabIndex = 3;
+            this.textBoxTime.Enabled = false;
+            this.textBoxTime.Location = new System.Drawing.Point(506, 72);
+            this.textBoxTime.Name = "textBoxTime";
+            this.textBoxTime.Size = new System.Drawing.Size(105, 20);
+            this.textBoxTime.TabIndex = 3;
             // 
             // labelTime
             // 
@@ -87,7 +89,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
             this.Controls.Add(this.labelTime);
-            this.Controls.Add(this.textBox1);
+            this.Controls.Add(this.textBoxTime);
             this.Controls.Add(this.labelSelected);
             this.Controls.Add(this.buttonSelect);
             this.Controls.Add(this.buttonLock);
@@ -103,7 +105,7 @@
         private System.Windows.Forms.Button buttonLock;
         private System.Windows.Forms.Button buttonSelect;
         private System.Windows.Forms.Label labelSelected;
-        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.TextBox textBoxTime;
         private System.Windows.Forms.Label labelTime;
         private System.Windows.Forms.OpenFileDialog openFileDialog;
         private System.Windows.Forms.Timer timer;
