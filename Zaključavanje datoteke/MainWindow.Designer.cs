@@ -56,6 +56,7 @@
             this.buttonSelect.TabIndex = 1;
             this.buttonSelect.Text = "Odaberi datoteku";
             this.buttonSelect.UseVisualStyleBackColor = true;
+            this.buttonSelect.Click += new System.EventHandler(this.buttonSelect_Click);
             // 
             // labelSelected
             // 

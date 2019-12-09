@@ -16,5 +16,18 @@ namespace Zaključavanje_datoteke
         {
             InitializeComponent();
         }
+        private void SelectFile()
+        {
+            if (openFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                labelSelected.Text = openFileDialog.FileName;
+                textBoxTime.Enabled = true;
+            }
+        }
+
+        private void buttonSelect_Click(object sender, EventArgs e)
+        {
+            SelectFile();
+        }
     }
 }
