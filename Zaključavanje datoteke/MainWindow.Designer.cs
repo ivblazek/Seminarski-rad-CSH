@@ -86,6 +86,10 @@
             this.labelTime.TabIndex = 4;
             this.labelTime.Text = "Vrijeme u sekundama:";
             // 
+            // timer
+            // 
+            this.timer.Tick += new System.EventHandler(this.timer_Tick);
+            // 
             // MainWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);

@@ -42,7 +42,18 @@ namespace Zaključavanje_datoteke
             timer.Interval = timeLocked;
             timer.Start();
         }
-        
+
+        private void UnlockFile()
+        {
+            s.Unlock(0, s.Length);
+            s.Close();
+
+            labelSelected.Text += " - OTKLJUČANO";
+            buttonSelect.Enabled = true;
+            buttonLock.Enabled = true;
+            textBoxTime.Enabled = true;
+        }
+
         private void buttonSelect_Click(object sender, EventArgs e)
         {
             SelectFile();
@@ -66,6 +77,12 @@ namespace Zaključavanje_datoteke
         private void buttonLock_Click(object sender, EventArgs e)
         {
             LockFile();
+        }
+
+        private void timer_Tick(object sender, EventArgs e)
+        {
+            timer.Stop();
+            UnlockFile();
         }
     }
 }
