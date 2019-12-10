@@ -47,6 +47,7 @@
             this.buttonLock.TabIndex = 0;
             this.buttonLock.Text = "Zaključaj";
             this.buttonLock.UseVisualStyleBackColor = true;
+            this.buttonLock.Click += new System.EventHandler(this.buttonLock_Click);
             // 
             // buttonSelect
             // 
