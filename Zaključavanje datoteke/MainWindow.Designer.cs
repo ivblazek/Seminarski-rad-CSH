@@ -74,6 +74,7 @@
             this.textBoxTime.Name = "textBoxTime";
             this.textBoxTime.Size = new System.Drawing.Size(105, 20);
             this.textBoxTime.TabIndex = 3;
+            this.textBoxTime.TextChanged += new System.EventHandler(this.textBoxTime_TextChanged);
             // 
             // labelTime
             // 
