@@ -36,6 +36,7 @@ namespace Zaključavanje_datoteke
             buttonLock.Enabled = false;
             textBoxTime.Enabled = false;
 
+            labelSelected.Text = openFileDialog.FileName;
             s = new FileStream(openFileDialog.FileName, FileMode.Open);
             s.Lock(0, s.Length);
 
