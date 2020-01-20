@@ -14,6 +14,7 @@ namespace Zaključavanje_datoteke
     public partial class MainWindow : Form
     {
         private int timeLocked;
+        private int timePassed;
         private FileStream s;
 
         public MainWindow()
@@ -40,8 +41,9 @@ namespace Zaključavanje_datoteke
             s = new FileStream(openFileDialog.FileName, FileMode.Open);
             s.Lock(0, s.Length);
 
-            timer.Interval = timeLocked;
+            timer.Interval = 1000;  //ms
             timer.Start();
+            timePassed = 0;
         }
 
         private void UnlockFile()
@@ -62,16 +64,16 @@ namespace Zaključavanje_datoteke
 
         private void textBoxTime_TextChanged(object sender, EventArgs e)
         {
-            buttonLock.Enabled = false;
-            if (textBoxTime.Text!="")
+            if (timePassed == 0) 
             {
-                if (int.TryParse(textBoxTime.Text, out timeLocked))
+                buttonLock.Enabled = false;
+                if (textBoxTime.Text != "")
                 {
-                    timeLocked *= 1000; //iz ms u s
-                    buttonLock.Enabled = true;
+                    if (int.TryParse(textBoxTime.Text, out timeLocked))
+                        buttonLock.Enabled = true;
+                    else
+                        MessageBox.Show("Unesite ispravno vrijeme!", "Greška", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
-                else
-                    MessageBox.Show("Unesite ispravno vrijeme!", "Greška", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -82,8 +84,15 @@ namespace Zaključavanje_datoteke
 
         private void timer_Tick(object sender, EventArgs e)
         {
-            timer.Stop();
-            UnlockFile();
+            timePassed += 1;
+            textBoxTime.Text = (timeLocked - timePassed).ToString();
+            if(timePassed == timeLocked)
+            {
+                timer.Stop();
+                UnlockFile();
+                timePassed = 0;
+                textBoxTime.Text = "";
+            }
         }
     }
 }
