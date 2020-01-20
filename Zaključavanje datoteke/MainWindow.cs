@@ -72,7 +72,10 @@ namespace Zaključavanje_datoteke
                     if (int.TryParse(textBoxTime.Text, out timeLocked))
                         buttonLock.Enabled = true;
                     else
+                    {
                         MessageBox.Show("Unesite ispravno vrijeme!", "Greška", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        textBoxTime.Text = textBoxTime.Text.Remove(textBoxTime.Text.Length - 1);
+                    }
                 }
             }
         }
