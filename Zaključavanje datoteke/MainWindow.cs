@@ -27,47 +27,63 @@ namespace Zaključavanje_datoteke
         private void WriteCSV()
         {
             StringBuilder result = new StringBuilder();
-            StreamWriter historyFile = File.AppendText(csvPath);
-
-            result.AppendFormat("\"{0}\",", listViewHistory.Items[0].Text);
-            for (int j = 1; j < listViewHistory.Items[0].SubItems.Count; ++j)
+            StreamWriter historyFile;
+            
+            try
             {
-                if (j < listViewHistory.Items[0].SubItems.Count - 1)
-                    result.AppendFormat("\"{0}\",", listViewHistory.Items[0].SubItems[j].Text);
-                else
-                    result.AppendFormat("\"{0}\"", listViewHistory.Items[0].SubItems[j].Text);
-            }
-            result.AppendLine();
+                historyFile = File.AppendText(csvPath);
+                result.AppendFormat("\"{0}\",", listViewHistory.Items[0].Text);
+                for (int j = 1; j < listViewHistory.Items[0].SubItems.Count; ++j)
+                {
+                    if (j < listViewHistory.Items[0].SubItems.Count - 1)
+                        result.AppendFormat("\"{0}\",", listViewHistory.Items[0].SubItems[j].Text);
+                    else
+                        result.AppendFormat("\"{0}\"", listViewHistory.Items[0].SubItems[j].Text);
+                }
+                result.AppendLine();
 
-            historyFile.Write(result.ToString());
-            historyFile.Close();
+                historyFile.Write(result.ToString());
+                historyFile.Close();
+            }
+            catch (IOException e)
+            {
+                MessageBox.Show(e.Message, "Greška", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         private void ReadCSV()
         {
             StringBuilder result = new StringBuilder();
-            StreamReader historyFile = new StreamReader(File.OpenRead(csvPath));
-            
-            while (!historyFile.EndOfStream)
+            StreamReader historyFile;
+            try
             {
-                string line = historyFile.ReadLine();
-                string [] values = line.Split(',');
-                ListViewItem entery = new ListViewItem();
-
-                values[0] = values[0].Remove(0, 1);
-                values[0] = values[0].Remove(values[0].Length - 1);
-                entery.Text = (values[0]);
-                for (int i=1; i < values.Length; ++i)
+                historyFile = new StreamReader(File.OpenRead(csvPath));
+                while (!historyFile.EndOfStream)
                 {
-                    values[i] = values[i].Remove(0, 1);
-                    values[i] = values[i].Remove(values[i].Length - 1);
-                    entery.SubItems.Add(values[i]);
+                    string line = historyFile.ReadLine();
+                    string[] values = line.Split(',');
+                    ListViewItem entery = new ListViewItem();
+
+                    values[0] = values[0].Remove(0, 1);
+                    values[0] = values[0].Remove(values[0].Length - 1);
+                    entery.Text = (values[0]);
+                    for (int i = 1; i < values.Length; ++i)
+                    {
+                        values[i] = values[i].Remove(0, 1);
+                        values[i] = values[i].Remove(values[i].Length - 1);
+                        entery.SubItems.Add(values[i]);
+                    }
+
+                    listViewHistory.Items.Insert(0, entery);
                 }
 
-                listViewHistory.Items.Insert(0, entery);
+                historyFile.Close();
             }
-
-            historyFile.Close();
+            catch (IOException e)
+            {
+                MessageBox.Show(e.Message, "Greška", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            
         }
         
         private void SelectFile()
@@ -83,21 +99,43 @@ namespace Zaključavanje_datoteke
 
         private void LockFile()
         {
-            buttonSelect.Enabled = false;
-            buttonLock.Enabled = false;
+            labelSelected.Text = openFileDialog.FileName;
+            try
+            {
+                fileToLock = new FileStream(openFileDialog.FileName, FileMode.Open);
+                buttonSelect.Enabled = false;
+                buttonLock.Enabled = false;
+                textBoxTime.Enabled = false;
+                radioButtonMS.Enabled = false;
+                radioButtonS.Enabled = false;
+                listViewHistory.Enabled = false;
+                
+                fileToLock.Lock(0, fileToLock.Length);
+
+                timer.Start();
+                timePassed = 0;
+
+                WriteCSV();
+            }
+            catch (FileNotFoundException e)
+            {
+                MessageBox.Show(e.Message, "Greška", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                exceptionLock();
+            }
+            catch(IOException e)
+            {
+                MessageBox.Show(e.Message, "Greška", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                exceptionLock();
+            }
+        }
+        private void exceptionLock()
+        {
+            listViewHistory.Items[0].Remove();
+            labelSelected.Text = "Trenutno NIJE odabrana datoteka";
+            textBoxTime.Text = "";
             textBoxTime.Enabled = false;
             radioButtonMS.Enabled = false;
             radioButtonS.Enabled = false;
-            listViewHistory.Enabled = false;
-
-            labelSelected.Text = openFileDialog.FileName;
-            fileToLock = new FileStream(openFileDialog.FileName, FileMode.Open);
-            fileToLock.Lock(0, fileToLock.Length);
-
-            timer.Start();
-            timePassed = 0;
-
-            WriteCSV();
         }
 
         private void UnlockFile()
