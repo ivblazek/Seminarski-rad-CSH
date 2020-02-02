@@ -28,6 +28,8 @@ namespace Zaključavanje_datoteke
             {
                 labelSelected.Text = openFileDialog.FileName;
                 textBoxTime.Enabled = true;
+                radioButtonMS.Enabled = true;
+                radioButtonS.Enabled = true;
             }
         }
 
@@ -36,12 +38,13 @@ namespace Zaključavanje_datoteke
             buttonSelect.Enabled = false;
             buttonLock.Enabled = false;
             textBoxTime.Enabled = false;
+            radioButtonMS.Enabled = false;
+            radioButtonS.Enabled = false;
 
             labelSelected.Text = openFileDialog.FileName;
             s = new FileStream(openFileDialog.FileName, FileMode.Open);
             s.Lock(0, s.Length);
 
-            timer.Interval = 1000;  //ms
             timer.Start();
             timePassed = 0;
         }
@@ -53,8 +56,9 @@ namespace Zaključavanje_datoteke
 
             labelSelected.Text += " - OTKLJUČANO";
             buttonSelect.Enabled = true;
-            buttonLock.Enabled = true;
             textBoxTime.Enabled = true;
+            radioButtonMS.Enabled = true;
+            radioButtonS.Enabled = true;
         }
 
         private void buttonSelect_Click(object sender, EventArgs e)
@@ -83,13 +87,20 @@ namespace Zaključavanje_datoteke
         private void buttonLock_Click(object sender, EventArgs e)
         {
             LockFile();
+            if (radioButtonS.Checked)
+                timer.Interval = 1000;
+            else
+            {
+                timer.Interval = timeLocked;
+                timeLocked = 1;
+            }  
         }
 
         private void timer_Tick(object sender, EventArgs e)
         {
             timePassed += 1;
             textBoxTime.Text = (timeLocked - timePassed).ToString();
-            if(timePassed == timeLocked)
+            if (timePassed == timeLocked)
             {
                 timer.Stop();
                 UnlockFile();
