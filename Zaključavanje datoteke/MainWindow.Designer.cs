@@ -39,6 +39,11 @@
             this.radioButtonMS = new System.Windows.Forms.RadioButton();
             this.radioButtonS = new System.Windows.Forms.RadioButton();
             this.panelRadio = new System.Windows.Forms.Panel();
+            this.listViewHistory = new System.Windows.Forms.ListView();
+            this.path = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.dateTime = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.lockedTime = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.precision = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.SuspendLayout();
             // 
             // buttonLock
@@ -124,11 +129,48 @@
             this.panelRadio.Size = new System.Drawing.Size(74, 20);
             this.panelRadio.TabIndex = 7;
             // 
+            // listViewHistory
+            // 
+            this.listViewHistory.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.path,
+            this.dateTime,
+            this.lockedTime,
+            this.precision});
+            this.listViewHistory.FullRowSelect = true;
+            this.listViewHistory.HideSelection = false;
+            this.listViewHistory.Location = new System.Drawing.Point(29, 196);
+            this.listViewHistory.Name = "listViewHistory";
+            this.listViewHistory.Size = new System.Drawing.Size(701, 170);
+            this.listViewHistory.TabIndex = 8;
+            this.listViewHistory.UseCompatibleStateImageBehavior = false;
+            this.listViewHistory.View = System.Windows.Forms.View.Details;
+            this.listViewHistory.SelectedIndexChanged += new System.EventHandler(this.listViewHistory_SelectedIndexChanged);
+            // 
+            // path
+            // 
+            this.path.Text = "Path";
+            this.path.Width = 430;
+            // 
+            // dateTime
+            // 
+            this.dateTime.Text = "Date Time";
+            this.dateTime.Width = 110;
+            // 
+            // lockedTime
+            // 
+            this.lockedTime.Text = "Locked Time";
+            this.lockedTime.Width = 80;
+            // 
+            // precision
+            // 
+            this.precision.Text = "Precision";
+            // 
             // MainWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.listViewHistory);
             this.Controls.Add(this.radioButtonS);
             this.Controls.Add(this.radioButtonMS);
             this.Controls.Add(this.labelTime);
@@ -156,6 +198,11 @@
         private System.Windows.Forms.RadioButton radioButtonMS;
         private System.Windows.Forms.RadioButton radioButtonS;
         private System.Windows.Forms.Panel panelRadio;
+        private System.Windows.Forms.ListView listViewHistory;
+        private System.Windows.Forms.ColumnHeader path;
+        private System.Windows.Forms.ColumnHeader dateTime;
+        private System.Windows.Forms.ColumnHeader lockedTime;
+        private System.Windows.Forms.ColumnHeader precision;
     }
 }
 

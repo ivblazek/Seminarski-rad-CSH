@@ -40,6 +40,7 @@ namespace Zaključavanje_datoteke
             textBoxTime.Enabled = false;
             radioButtonMS.Enabled = false;
             radioButtonS.Enabled = false;
+            listViewHistory.Enabled = false;
 
             labelSelected.Text = openFileDialog.FileName;
             s = new FileStream(openFileDialog.FileName, FileMode.Open);
@@ -59,6 +60,7 @@ namespace Zaključavanje_datoteke
             textBoxTime.Enabled = true;
             radioButtonMS.Enabled = true;
             radioButtonS.Enabled = true;
+            listViewHistory.Enabled = true;
         }
 
         private void buttonSelect_Click(object sender, EventArgs e)
@@ -86,14 +88,24 @@ namespace Zaključavanje_datoteke
 
         private void buttonLock_Click(object sender, EventArgs e)
         {
-            LockFile();
+            ListViewItem entery = new ListViewItem(openFileDialog.FileName);
+            entery.SubItems.Add(DateTime.Now.ToString());
+            entery.SubItems.Add(timeLocked.ToString());
+                        
             if (radioButtonS.Checked)
+            {
                 timer.Interval = 1000;
+                entery.SubItems.Add("s");
+            }
             else
             {
                 timer.Interval = timeLocked;
                 timeLocked = 1;
-            }  
+                entery.SubItems.Add("ms");
+            }
+
+            listViewHistory.Items.Insert(0, entery);
+            LockFile();
         }
 
         private void timer_Tick(object sender, EventArgs e)
@@ -107,6 +119,19 @@ namespace Zaključavanje_datoteke
                 timePassed = 0;
                 textBoxTime.Text = "";
             }
+        }
+        private void listViewHistory_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (listViewHistory.SelectedItems.Count != 0)
+            {
+                openFileDialog.FileName = listViewHistory.SelectedItems[0].Text;
+                labelSelected.Text = openFileDialog.FileName;
+                textBoxTime.Text= listViewHistory.SelectedItems[0].SubItems[2].Text;
+                if (listViewHistory.SelectedItems[0].SubItems[3].Text.Equals("s"))
+                    radioButtonS.Checked = true;
+                else
+                    radioButtonMS.Checked = true;
+            }       
         }
     }
 }
