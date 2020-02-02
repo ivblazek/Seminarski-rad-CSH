@@ -15,13 +15,61 @@ namespace Zaključavanje_datoteke
     {
         private int timeLocked;
         private int timePassed;
-        private FileStream s;
+        private FileStream fileToLock;
+        private string csvPath = "history.csv";
 
         public MainWindow()
         {
             InitializeComponent();
+            ReadCSV();
         }
 
+        private void WriteCSV()
+        {
+            StringBuilder result = new StringBuilder();
+            StreamWriter historyFile = File.AppendText(csvPath);
+
+            result.AppendFormat("\"{0}\",", listViewHistory.Items[0].Text);
+            for (int j = 1; j < listViewHistory.Items[0].SubItems.Count; ++j)
+            {
+                if (j < listViewHistory.Items[0].SubItems.Count - 1)
+                    result.AppendFormat("\"{0}\",", listViewHistory.Items[0].SubItems[j].Text);
+                else
+                    result.AppendFormat("\"{0}\"", listViewHistory.Items[0].SubItems[j].Text);
+            }
+            result.AppendLine();
+
+            historyFile.Write(result.ToString());
+            historyFile.Close();
+        }
+
+        private void ReadCSV()
+        {
+            StringBuilder result = new StringBuilder();
+            StreamReader historyFile = new StreamReader(File.OpenRead(csvPath));
+            
+            while (!historyFile.EndOfStream)
+            {
+                string line = historyFile.ReadLine();
+                string [] values = line.Split(',');
+                ListViewItem entery = new ListViewItem();
+
+                values[0] = values[0].Remove(0, 1);
+                values[0] = values[0].Remove(values[0].Length - 1);
+                entery.Text = (values[0]);
+                for (int i=1; i < values.Length; ++i)
+                {
+                    values[i] = values[i].Remove(0, 1);
+                    values[i] = values[i].Remove(values[i].Length - 1);
+                    entery.SubItems.Add(values[i]);
+                }
+
+                listViewHistory.Items.Insert(0, entery);
+            }
+
+            historyFile.Close();
+        }
+        
         private void SelectFile()
         {
             if (openFileDialog.ShowDialog() == DialogResult.OK)
@@ -43,17 +91,19 @@ namespace Zaključavanje_datoteke
             listViewHistory.Enabled = false;
 
             labelSelected.Text = openFileDialog.FileName;
-            s = new FileStream(openFileDialog.FileName, FileMode.Open);
-            s.Lock(0, s.Length);
+            fileToLock = new FileStream(openFileDialog.FileName, FileMode.Open);
+            fileToLock.Lock(0, fileToLock.Length);
 
             timer.Start();
             timePassed = 0;
+
+            WriteCSV();
         }
 
         private void UnlockFile()
         {
-            s.Unlock(0, s.Length);
-            s.Close();
+            fileToLock.Unlock(0, fileToLock.Length);
+            fileToLock.Close();
 
             labelSelected.Text += " - OTKLJUČANO";
             buttonSelect.Enabled = true;
@@ -131,6 +181,9 @@ namespace Zaključavanje_datoteke
                     radioButtonS.Checked = true;
                 else
                     radioButtonMS.Checked = true;
+                textBoxTime.Enabled = true;
+                radioButtonMS.Enabled = true;
+                radioButtonS.Enabled = true;
             }       
         }
     }
