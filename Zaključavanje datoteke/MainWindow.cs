@@ -171,7 +171,8 @@ namespace Zaključavanje_datoteke
                     else
                     {
                         MessageBox.Show("Unesite ispravno vrijeme!", "Greška", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        textBoxTime.Text = textBoxTime.Text.Remove(textBoxTime.Text.Length - 1);
+                        textBoxTime.Text = textBoxTime.Text.Remove(textBoxTime.SelectionStart - 1, 1);
+                        textBoxTime.SelectionStart = textBoxTime.Text.Length;
                     }
                 }
             }
