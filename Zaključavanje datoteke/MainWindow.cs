@@ -57,27 +57,30 @@ namespace Zaključavanje_datoteke
             StreamReader historyFile;
             try
             {
-                historyFile = new StreamReader(File.OpenRead(csvPath));
-                while (!historyFile.EndOfStream)
+                if(File.Exists(csvPath))
                 {
-                    string line = historyFile.ReadLine();
-                    string[] values = line.Split(',');
-                    ListViewItem entery = new ListViewItem();
-
-                    values[0] = values[0].Remove(0, 1);
-                    values[0] = values[0].Remove(values[0].Length - 1);
-                    entery.Text = (values[0]);
-                    for (int i = 1; i < values.Length; ++i)
+                    historyFile = new StreamReader(File.OpenRead(csvPath));
+                    while (!historyFile.EndOfStream)
                     {
-                        values[i] = values[i].Remove(0, 1);
-                        values[i] = values[i].Remove(values[i].Length - 1);
-                        entery.SubItems.Add(values[i]);
+                        string line = historyFile.ReadLine();
+                        string[] values = line.Split(',');
+                        ListViewItem entery = new ListViewItem();
+
+                        values[0] = values[0].Remove(0, 1);
+                        values[0] = values[0].Remove(values[0].Length - 1);
+                        entery.Text = (values[0]);
+                        for (int i = 1; i < values.Length; ++i)
+                        {
+                            values[i] = values[i].Remove(0, 1);
+                            values[i] = values[i].Remove(values[i].Length - 1);
+                            entery.SubItems.Add(values[i]);
+                        }
+
+                        listViewHistory.Items.Insert(0, entery);
                     }
 
-                    listViewHistory.Items.Insert(0, entery);
+                    historyFile.Close();
                 }
-
-                historyFile.Close();
             }
             catch (IOException e)
             {
